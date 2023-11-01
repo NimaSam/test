@@ -112,6 +112,17 @@ int main(int argc, char *argv[])
             U.correctBoundaryConditions();
         }
 
+        fvScalarMatrix TEqn
+        (
+            fvm::ddt(T)
+          + fvm::div(phi, T)
+          - fvm::laplacian(nu, T)
+        );
+
+        TEqn.solve();
+
+        D = D0 + a0*(T-T0);
+
         runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
